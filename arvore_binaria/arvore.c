@@ -32,7 +32,7 @@ int arv_tem_filhas(Arvore *a) {
 //========= Exercício 2 - pré-ordem ====
 void percorre_pre_ordem(Arvore *a) {
     if (!verifica_arv_vazia(a)) {
-        printf("%c\n", a->info);
+        printf("%c", a->info);
         percorre_pre_ordem(a->esq);
         percorre_pre_ordem(a->dir);
     }
@@ -42,7 +42,7 @@ void percorre_pre_ordem(Arvore *a) {
 void percorre_in_ordem(Arvore *a) {
     if (!verifica_arv_vazia(a)) {
         percorre_in_ordem(a->esq);
-        printf("%c\n", a->info);
+        printf("%c", a->info);
         percorre_in_ordem(a->dir);
     }
 }
@@ -52,7 +52,7 @@ void percorre_pos_ordem(Arvore *a) {
     if (!verifica_arv_vazia(a)) {
         percorre_pos_ordem(a->esq);
         percorre_pos_ordem(a->dir);
-        printf("%c\n", a->info);
+        printf("%c", a->info);
     }
 }
 
@@ -125,14 +125,15 @@ int main (int argc, char *argv[]) {
      )
    );	
 
-    //percorre_pre_ordem(a); // abdcef
-    //percorre_pos_ordem(a); // dbefca
-    //percorre_in_ordem(a); // bdaecf
+    printf("Pré ordem: "); percorre_pre_ordem(a); // abdcef
+    printf("\nPós ordem: "); percorre_pos_ordem(a); // dbefca
+    printf("\nIn ordem: "); percorre_in_ordem(a); // bdaecf
+    printf("\n");
 
-    //printf("%i\n", pertence_arv(a, 'g'));
-    //printf("%i\n", conta_nos(a));
-    //printf("%i\n", calcula_altura_arvore(a));
-    printf("%i\n", conta_nos_folha(a));
+    printf("O caracter 'g' pertence à arvore: %s\n", pertence_arv(a, 'g') ? "sim" : "não");
+    printf("A árvore tem: %i nós\n", conta_nos(a));
+    printf("A árvore tem altura: %i\n", calcula_altura_arvore(a));
+    printf("A árvore tem: %i nós folha\n", conta_nos_folha(a));
     
    arv_libera (a);
 

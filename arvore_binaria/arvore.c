@@ -60,8 +60,7 @@ void percorre_pos_ordem(Arvore *a) {
 int pertence_arv(Arvore *a, char c) {
     if (!verifica_arv_vazia(a)) {
         if (a->info == c) return 1;
-        if (pertence_arv(a->esq, c)) return 1;
-        if (pertence_arv(a->dir, c)) return 1;
+        return (pertence_arv(a->esq, c) || pertence_arv(a->dir, c));
     }
 
     return 0;
@@ -81,19 +80,16 @@ int conta_nos (Arvore *a) {
 
 //========= Exercício 5 - calcula altura ====
 int calcula_altura_arvore (Arvore *a) {
-    int altura = 0, aux_d, aux_e;
+    int altura = 1, aux_d, aux_e;
     if (!verifica_arv_vazia(a)) {
-
-        if (arv_tem_filhas(a)) 
-            altura++;
-
         aux_e = calcula_altura_arvore(a->esq);
         aux_d = calcula_altura_arvore(a->dir);
 
         altura = aux_e > aux_d ? altura + aux_e : altura + aux_d;
+        return altura;
     }
 
-    return altura;
+    return -1;
 }
 
 //========= Exercício 6 - conta folhas ====

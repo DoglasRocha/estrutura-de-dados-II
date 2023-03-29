@@ -87,7 +87,7 @@ Arvore* inserir (Arvore *a, int chave) {
       a->esq = inserir(a->esq, chave);
       a = atualizar_fb_esq(a);
    }
-   else {
+   else if (chave > a->chave) {
       a->dir = inserir(a->dir, chave);
       a = atualizar_fb_dir(a);
    }

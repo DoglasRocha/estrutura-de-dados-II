@@ -5,7 +5,9 @@
 #include <stdlib.h>
 
 typedef struct node {
-   int chave;
+   // char chave // quest 1
+   // int chave // quest 2
+   char chave[10]; // quest 3
    int altura;
    struct node* esq;
    struct node* dir;

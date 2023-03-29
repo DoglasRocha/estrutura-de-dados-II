@@ -76,18 +76,20 @@ Arvore* atualizar_fb_esq (Arvore *a) {
 }
 
 /*----------------------*/
-Arvore* inserir (Arvore *a, int chave) {
+Arvore* inserir (Arvore *a, char *chave) {
    if (a == NULL) {
       a = (Arvore *) malloc(sizeof(Arvore));
-      a->chave = chave;
+      sprintf(a->chave, "%s", chave);
       a->altura = 0;
       a->esq = a->esq = NULL;
    }
-   else if (chave < a->chave) {
+   //else if (chave < a->chave) { // quest 1 e 2
+   else if (stringMenor(chave, a->chave)) { // quest 3
       a->esq = inserir(a->esq, chave);
       a = atualizar_fb_esq(a);
    }
-   else if (chave > a->chave) {
+   //else if (chave > a->chave) { // quest 1 e 2
+   else if (stringMaior(chave, a->chave)) { // quest 3
       a->dir = inserir(a->dir, chave);
       a = atualizar_fb_dir(a);
    }
@@ -96,16 +98,18 @@ Arvore* inserir (Arvore *a, int chave) {
 }
 
 /*Função para remover um nó de uma árvore binária de busca balanceada!*/
-Arvore* remover (Arvore *a, int chave) {
+Arvore* remover (Arvore *a, char *chave) {
    if (a == NULL) {
       return NULL;
    }
    else {
-      if (chave < a->chave) {
+      //if (chave < a->chave) { // quest 1 e 2
+      if (stringMenor(chave, a->chave)) { // quest 3
          a->esq = remover (a->esq, chave);
          a = atualizar_fb_dir (a);
       }
-      else if (chave > a->chave) {
+      //else if (chave > a->chave) { // quest 1 e 2
+      else if (stringMaior(chave, a->chave)) { // quest 3
          a->dir = remover (a->dir, chave);
          a = atualizar_fb_esq (a);
       }
@@ -129,8 +133,10 @@ Arvore* remover (Arvore *a, int chave) {
             while (tmp->dir != NULL) {
                tmp = tmp->dir;
             }
-            a->chave = tmp->chave; 
-            tmp->chave = chave;
+            //a->chave = tmp->chave; // quest 1 e 2
+            sprintf(a->chave, "%s", tmp->chave); // quest 3
+            //tmp->chave = chave; // qesut 1 e 2
+            sprintf(tmp->chave, "%s", chave); // quest 3
             a->esq = remover (a->esq, chave); 
             a = atualizar_fb_dir (a);
          }
@@ -146,9 +152,34 @@ void imprimir_in_order (Arvore* a, int nivel) {
       for (i = 0; i < nivel; i++) {
          printf("      ");
       }
-      printf("Chave: %d (altura: %d, fb: %+d) no nível: %d\n", a->chave, a->altura, balanceamento(a), nivel);
+      // printf("Chave: %c (altura: %d, fb: %+d) no nível: %d\n", a->chave, a->altura, balanceamento(a), nivel); // quest 1
+      // printf("Chave: %s (altura: %d, fb: %+d) no nível: %d\n", a->chave, a->altura, balanceamento(a), nivel); // quest 2
+      printf("Chave: %s (altura: %d, fb: %+d) no nível: %d\n", a->chave, a->altura, balanceamento(a), nivel); // quest 3
       imprimir_in_order (a->esq, nivel + 1);
       imprimir_in_order (a->dir, nivel + 1);
    }
 }
 
+int stringMaior(char str1[], char str2[]) {
+   for (int i = 0; i < 10; i++) {
+      if (str1[i] > str2[i])
+         return 1;
+
+      if (str1[i] < str2[i])
+         return 0;
+   }
+
+   return 0;
+}
+
+int stringMenor(char str1[], char str2[]) {
+   for (int i = 0; i < 10; i++) {
+      if (str1[i] > str2[i])
+         return 0;
+
+      if (str1[i] < str2[i])
+         return 1;
+   }
+
+   return 0;
+}

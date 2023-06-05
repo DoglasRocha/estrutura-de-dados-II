@@ -72,20 +72,20 @@ void liberar_grafo_mat(GrafoM *G)
 }
 
 /*Função para inserir um vertice direcionado no grafo construído com matriz de adjacências*/
-void insere_vertice_direcionado_grafo_mat(GrafoM *G, int aresta1, int aresta2)
+void insere_vertice_direcionado_grafo_mat(GrafoM *G, int aresta1, int aresta2, int peso)
 {
     if (aresta1 >= G->V || aresta2 >= G->V)
         return;
 
     G->E++;
-    G->Mat[aresta1][aresta2] = 1;
+    G->Mat[aresta1][aresta2] = peso;
 }
 
 /*Função para inserir um vertice nao direcionado no grafo construído com matriz de adjacências*/
-void insere_vertice_nao_direcionado_grafo_mat(GrafoM *G, int aresta1, int aresta2)
+void insere_vertice_nao_direcionado_grafo_mat(GrafoM *G, int aresta1, int aresta2, int peso)
 {
-    insere_vertice_direcionado_grafo_mat(G, aresta1, aresta2);
-    insere_vertice_direcionado_grafo_mat(G, aresta2, aresta1);
+    insere_vertice_direcionado_grafo_mat(G, aresta1, aresta2, peso);
+    insere_vertice_direcionado_grafo_mat(G, aresta2, aresta1, peso);
 }
 
 /*Função para imprimir um grafo construído com matriz de adjacẽncias*/
@@ -106,17 +106,18 @@ void imprime_grafo_mat(GrafoM *G)
 }
 
 /*Função para criar nó*/
-NoA *criaNo(int info)
+NoA *criaNo(int info, int peso)
 {
     NoA *no = (NoA *)malloc(sizeof(NoA));
     no->id = info;
     no->next = NULL;
+    no->weight = peso;
 
     return no;
 }
 
 /*Função que insere vertice direcionado na lista de adjacências de um grafo*/
-void insere_vertice_direcionado_grafo_adj(GrafoA *G, int aresta1, int aresta2)
+void insere_vertice_direcionado_grafo_adj(GrafoA *G, int aresta1, int aresta2, int peso)
 {
     NoA *aux;
     if (aresta1 >= G->V || aresta2 >= G->V)
@@ -125,21 +126,21 @@ void insere_vertice_direcionado_grafo_adj(GrafoA *G, int aresta1, int aresta2)
     G->E++;
     aux = G->Adj[aresta1];
     if (aux == NULL)
-        G->Adj[aresta1] = criaNo(aresta2);
+        G->Adj[aresta1] = criaNo(aresta2, peso);
     else
     {
         while (aux->next != NULL)
             aux = aux->next;
 
-        aux->next = criaNo(aresta2);
+        aux->next = criaNo(aresta2, peso);
     }
 }
 
 /*Função para inserir um vertice nao direcionado no grafo construído com lista de adjacências*/
-void insere_vertice_nao_direcionado_grafo_adj(GrafoA *G, int aresta1, int aresta2)
+void insere_vertice_nao_direcionado_grafo_adj(GrafoA *G, int aresta1, int aresta2, int peso)
 {
-    insere_vertice_direcionado_grafo_adj(G, aresta1, aresta2);
-    insere_vertice_direcionado_grafo_adj(G, aresta2, aresta1);
+    insere_vertice_direcionado_grafo_adj(G, aresta1, aresta2, peso);
+    insere_vertice_direcionado_grafo_adj(G, aresta2, aresta1, peso);
 }
 
 /*Função para imprimir um grafo construído com lista de adjacẽncias*/
@@ -152,7 +153,7 @@ void imprime_grafo_adj(GrafoA *G)
         aux = G->Adj[i];
         while (aux != NULL)
         {
-            printf("%2d ", aux->id);
+            printf("%2d: (w:%2d), ", aux->id, aux->weight);
             aux = aux->next;
         }
         printf("\n");

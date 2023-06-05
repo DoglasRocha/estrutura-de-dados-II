@@ -7,6 +7,7 @@
 typedef struct noA
 {
     int id;           /*Identificador armazenado no nó. */
+    int weight;       /* Peso da aresta */
     struct noA *next; /* Próximo nó na lista encadeada. */
 } NoA;
 
@@ -31,10 +32,10 @@ GrafoM *criar_grafo_mat(int tamanho);
 void liberarNo(NoA *no);
 void liberar_grafo_adj(GrafoA *G);
 void liberar_grafo_mat(GrafoM *G);
-void insere_vertice_direcionado_grafo_mat(GrafoM *G, int aresta1, int aresta2);
-void insere_vertice_nao_direcionado_grafo_mat(GrafoM *G, int aresta1, int aresta2);
+void insere_vertice_direcionado_grafo_mat(GrafoM *G, int aresta1, int aresta2, int peso);
+void insere_vertice_nao_direcionado_grafo_mat(GrafoM *G, int aresta1, int aresta2, int peso);
 void imprime_grafo_mat(GrafoM *G);
-NoA *criaNo(int info);
-void insere_vertice_direcionado_grafo_adj(GrafoA *G, int aresta1, int aresta2);
-void insere_vertice_nao_direcionado_grafo_adj(GrafoA *G, int aresta1, int aresta2);
+NoA *criaNo(int info, int peso);
+void insere_vertice_direcionado_grafo_adj(GrafoA *G, int aresta1, int aresta2, int peso);
+void insere_vertice_nao_direcionado_grafo_adj(GrafoA *G, int aresta1, int aresta2, int peso);
 void imprime_grafo_adj(GrafoA *G);

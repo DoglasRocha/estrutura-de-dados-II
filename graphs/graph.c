@@ -71,21 +71,21 @@ void liberar_grafo_mat(GrafoM *G)
     free(G);
 }
 
-/*Função para inserir um vertice direcionado no grafo construído com matriz de adjacências*/
-void insere_vertice_direcionado_grafo_mat(GrafoM *G, int aresta1, int aresta2)
+/*Função para inserir uma aresta direcionada no grafo construído com matriz de adjacências*/
+void insere_aresta_direcionado_grafo_mat(GrafoM *G, int vertice1, int vertice2, int peso)
 {
-    if (aresta1 >= G->V || aresta2 >= G->V)
+    if (vertice1 >= G->V || vertice2 >= G->V)
         return;
 
     G->E++;
-    G->Mat[aresta1][aresta2] = 1;
+    G->Mat[vertice1][vertice2] = peso;
 }
 
-/*Função para inserir um vertice nao direcionado no grafo construído com matriz de adjacências*/
-void insere_vertice_nao_direcionado_grafo_mat(GrafoM *G, int aresta1, int aresta2)
+/*Função para inserir uma aresta nao direcionada no grafo construído com matriz de adjacências*/
+void insere_aresta_nao_direcionado_grafo_mat(GrafoM *G, int vertice1, int vertice2, int peso)
 {
-    insere_vertice_direcionado_grafo_mat(G, aresta1, aresta2);
-    insere_vertice_direcionado_grafo_mat(G, aresta2, aresta1);
+    insere_aresta_direcionado_grafo_mat(G, vertice1, vertice2, peso);
+    insere_aresta_direcionado_grafo_mat(G, vertice2, vertice1, peso);
 }
 
 /*Função para imprimir um grafo construído com matriz de adjacẽncias*/
@@ -106,40 +106,41 @@ void imprime_grafo_mat(GrafoM *G)
 }
 
 /*Função para criar nó*/
-NoA *criaNo(int info)
+NoA *criaNo(int info, int peso)
 {
     NoA *no = (NoA *)malloc(sizeof(NoA));
     no->id = info;
     no->next = NULL;
+    no->weight = peso;
 
     return no;
 }
 
-/*Função que insere vertice direcionado na lista de adjacências de um grafo*/
-void insere_vertice_direcionado_grafo_adj(GrafoA *G, int aresta1, int aresta2)
+/*Função que insere aresta direcionada na lista de adjacências de um grafo*/
+void insere_aresta_direcionado_grafo_adj(GrafoA *G, int vertice1, int vertice2, int peso)
 {
     NoA *aux;
-    if (aresta1 >= G->V || aresta2 >= G->V)
+    if (vertice1 >= G->V || vertice2 >= G->V)
         return;
 
     G->E++;
-    aux = G->Adj[aresta1];
+    aux = G->Adj[vertice1];
     if (aux == NULL)
-        G->Adj[aresta1] = criaNo(aresta2);
+        G->Adj[vertice1] = criaNo(vertice2, peso);
     else
     {
         while (aux->next != NULL)
             aux = aux->next;
 
-        aux->next = criaNo(aresta2);
+        aux->next = criaNo(vertice2, peso);
     }
 }
 
-/*Função para inserir um vertice nao direcionado no grafo construído com lista de adjacências*/
-void insere_vertice_nao_direcionado_grafo_adj(GrafoA *G, int aresta1, int aresta2)
+/*Função para inserir uma aresta nao direcionada no grafo construído com lista de adjacências*/
+void insere_aresta_nao_direcionado_grafo_adj(GrafoA *G, int vertice1, int vertice2, int peso)
 {
-    insere_vertice_direcionado_grafo_adj(G, aresta1, aresta2);
-    insere_vertice_direcionado_grafo_adj(G, aresta2, aresta1);
+    insere_aresta_direcionado_grafo_adj(G, vertice1, vertice2, peso);
+    insere_aresta_direcionado_grafo_adj(G, vertice2, vertice1, peso);
 }
 
 /*Função para imprimir um grafo construído com lista de adjacẽncias*/
@@ -152,9 +153,47 @@ void imprime_grafo_adj(GrafoA *G)
         aux = G->Adj[i];
         while (aux != NULL)
         {
-            printf("%2d ", aux->id);
+            printf("%2d: (w:%2d), ", aux->id, aux->weight);
             aux = aux->next;
         }
         printf("\n");
     }
 }
+
+/*  Função para contar arestas que incidem sobre um determinado vertice numa
+    matriz de adjacencias */
+void contar_arestas_incidents_mat(GrafoM *G, int vertice)
+{
+    int sum = 0;
+    if (vertice >= G->V)
+        return;
+
+    for (int i = 0; i < G->V; i++)
+        if (G->Mat[i][vertice])
+            sum++;
+
+    printf("Número de arestas adjacentes ao vértice %d: %d\n", vertice, sum);
+}
+
+/*  Função para contar arestas que incidem sobre um determinado vertice numa
+    matriz de adjacencias */
+void contar_arestas_incidentes_adj(GrafoA *G, int vertice)
+{
+    int sum = 0;
+    if (vertice >= G->V)
+        return;
+
+    for (int i = 0; i < G->V; i++)
+    {
+        for (NoA *aux = G->Adj[i]; aux != NULL; aux = aux->next)
+            if (aux->id == vertice)
+                sum++;
+    }
+
+    printf("Número de arestas adjacentes ao vértice %d: %d\n", vertice, sum);
+}
+
+void contar_arestas_que_saem_mat(GrafoM *G, int vertice);
+void contar_arestas_que_saem_adj(GrafoA *G, int vertice);
+void listar_vertices_adjacentes_mat(GrafoM *G, int vertice);
+void listar_vertices_adjacentes_adj(GrafoA *G, int vertice);

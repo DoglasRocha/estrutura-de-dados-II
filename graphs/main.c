@@ -154,7 +154,9 @@ void questao3()
 
     printf("Matriz de adjacências:\n");
     imprime_grafo_mat(Gm);
-    contar_arestas_incidents_mat(Gm, 4);
+    contar_arestas_incidents_mat(Gm, 3);
+    contar_arestas_que_saem_mat(Gm, 0);
+    listar_vertices_adjacentes_mat(Gm, 2);
 
     // 0
     insere_aresta_direcionado_grafo_adj(Ga, 0, 1, 1);
@@ -181,6 +183,8 @@ void questao3()
     printf("\nLista de adjacências:\n");
     imprime_grafo_adj(Ga);
     contar_arestas_incidentes_adj(Ga, 5);
+    contar_arestas_que_saem_adj(Ga, 4);
+    listar_vertices_adjacentes_adj(Ga, 5);
 
     liberar_grafo_adj(Ga);
     liberar_grafo_mat(Gm);

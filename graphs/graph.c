@@ -176,7 +176,7 @@ void contar_arestas_incidents_mat(GrafoM *G, int vertice)
 }
 
 /*  Função para contar arestas que incidem sobre um determinado vertice numa
-    matriz de adjacencias */
+    lista de adjacencias */
 void contar_arestas_incidentes_adj(GrafoA *G, int vertice)
 {
     int sum = 0;
@@ -193,7 +193,62 @@ void contar_arestas_incidentes_adj(GrafoA *G, int vertice)
     printf("Número de arestas adjacentes ao vértice %d: %d\n", vertice, sum);
 }
 
-void contar_arestas_que_saem_mat(GrafoM *G, int vertice);
-void contar_arestas_que_saem_adj(GrafoA *G, int vertice);
-void listar_vertices_adjacentes_mat(GrafoM *G, int vertice);
-void listar_vertices_adjacentes_adj(GrafoA *G, int vertice);
+/*  Função para contar arestas que saem de um determinado vertice numa
+    matriz de adjacencias */
+void contar_arestas_que_saem_mat(GrafoM *G, int vertice)
+{
+    int sum = 0;
+    if (vertice >= G->V)
+        return;
+
+    for (int i = 0; i < G->V; i++)
+        if (G->Mat[vertice][i])
+            sum++;
+
+    printf("Número de arestas que saem do vértice %d: %d\n", vertice, sum);
+}
+
+/*  Função para contar arestas que saem de um determinado vertice numa
+    matriz de adjacencias */
+void contar_arestas_que_saem_adj(GrafoA *G, int vertice)
+{
+    int sum = 0;
+    if (vertice >= G->V)
+        return;
+
+    for (NoA *aux = G->Adj[vertice]; aux != NULL; aux = aux->next)
+        sum++;
+
+    printf("Número de arestas adjacentes ao vértice %d: %d\n", vertice, sum);
+}
+
+/*  Função que lista os vértices adjacentes a um determinado vertice numa
+    matriz de adjacencia */
+void listar_vertices_adjacentes_mat(GrafoM *G, int vertice)
+{
+    if (vertice >= G->V)
+        return;
+
+    printf("Vértices adjacentes ao vértice %d: ", vertice);
+
+    for (int i = 0; i < G->V; i++)
+        if (G->Mat[vertice][i])
+            printf("%d ", i);
+
+    printf("\n");
+}
+
+/*  Função que lista os vértices adjacentes a um determinado vertice numa
+    lista de adjacencia */
+void listar_vertices_adjacentes_adj(GrafoA *G, int vertice)
+{
+    if (vertice >= G->V)
+        return;
+
+    printf("Vértices adjacentes ao vértice %d: ", vertice);
+
+    for (NoA *aux = G->Adj[vertice]; aux != NULL; aux = aux->next)
+        printf("%d ", aux->id);
+
+    printf("\n");
+}

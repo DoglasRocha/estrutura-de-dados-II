@@ -72,20 +72,20 @@ void liberar_grafo_mat(GrafoM *G)
 }
 
 /*Função para inserir uma aresta direcionada no grafo construído com matriz de adjacências*/
-void insere_aresta_direcionado_grafo_mat(GrafoM *G, int vertice1, int vertice2, int peso)
+void insere_aresta_direcionada_grafo_mat(GrafoM *G, int origem, int destino, int peso)
 {
-    if (vertice1 >= G->V || vertice2 >= G->V)
+    if (origem >= G->V || destino >= G->V)
         return;
 
     G->E++;
-    G->Mat[vertice1][vertice2] = peso;
+    G->Mat[origem][destino] = peso;
 }
 
 /*Função para inserir uma aresta nao direcionada no grafo construído com matriz de adjacências*/
-void insere_aresta_nao_direcionado_grafo_mat(GrafoM *G, int vertice1, int vertice2, int peso)
+void insere_aresta_nao_direcionada_grafo_mat(GrafoM *G, int vertice1, int vertice2, int peso)
 {
-    insere_aresta_direcionado_grafo_mat(G, vertice1, vertice2, peso);
-    insere_aresta_direcionado_grafo_mat(G, vertice2, vertice1, peso);
+    insere_aresta_direcionada_grafo_mat(G, vertice1, vertice2, peso);
+    insere_aresta_direcionada_grafo_mat(G, vertice2, vertice1, peso);
 }
 
 /*Função para imprimir um grafo construído com matriz de adjacẽncias*/
@@ -117,30 +117,30 @@ NoA *criaNo(int info, int peso)
 }
 
 /*Função que insere aresta direcionada na lista de adjacências de um grafo*/
-void insere_aresta_direcionado_grafo_adj(GrafoA *G, int vertice1, int vertice2, int peso)
+void insere_aresta_direcionada_grafo_adj(GrafoA *G, int origem, int destino, int peso)
 {
     NoA *aux;
-    if (vertice1 >= G->V || vertice2 >= G->V)
+    if (origem >= G->V || origem >= G->V)
         return;
 
     G->E++;
-    aux = G->Adj[vertice1];
+    aux = G->Adj[origem];
     if (aux == NULL)
-        G->Adj[vertice1] = criaNo(vertice2, peso);
+        G->Adj[origem] = criaNo(destino, peso);
     else
     {
         while (aux->next != NULL)
             aux = aux->next;
 
-        aux->next = criaNo(vertice2, peso);
+        aux->next = criaNo(destino, peso);
     }
 }
 
 /*Função para inserir uma aresta nao direcionada no grafo construído com lista de adjacências*/
-void insere_aresta_nao_direcionado_grafo_adj(GrafoA *G, int vertice1, int vertice2, int peso)
+void insere_aresta_nao_direcionada_grafo_adj(GrafoA *G, int vertice1, int vertice2, int peso)
 {
-    insere_aresta_direcionado_grafo_adj(G, vertice1, vertice2, peso);
-    insere_aresta_direcionado_grafo_adj(G, vertice2, vertice1, peso);
+    insere_aresta_direcionada_grafo_adj(G, vertice1, vertice2, peso);
+    insere_aresta_direcionada_grafo_adj(G, vertice2, vertice1, peso);
 }
 
 /*Função para imprimir um grafo construído com lista de adjacẽncias*/

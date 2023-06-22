@@ -33,7 +33,11 @@ void questao2()
     insere_aresta_direcionada_grafo_adj(grafo, 11, 9); // 11
 
     // deep search
-    busca_profundidade(grafo);
+    busca_profundidade_arestas(grafo);
+    printf("\n\n");
+    busca_profundidade_componentes(grafo);
+    printf("\n\n");
+    busca_profundidade_bipartido(grafo);
 
     // libera grafo
     liberar_grafo_adj(grafo);
